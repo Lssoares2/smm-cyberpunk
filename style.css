@@ -1,0 +1,337 @@
+/* ==========================================
+   ESTILOS DO CANVAS DE PIXELS
+========================================== */
+#cyberMatrixCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 998;
+}
+
+/* ==========================================
+   ESTRUTURA E ANIMAÇÃO DO LETREIRO
+========================================== */
+.cyber-marquee-wrapper {
+    width: 100%;
+    background-color: #050505 !important;
+    border-bottom: 1px solid #00ff66 !important;
+    overflow: hidden !important;
+    white-space: nowrap !important;
+    box-shadow: 0 2px 10px rgba(0, 255, 102, 0.2) !important;
+    padding: 12px 0 !important;
+}
+
+.cyber-marquee-content {
+    display: inline-block !important;
+    padding-left: 100% !important;
+    animation: cyber-scroll 35s linear infinite !important;
+    color: #00ff66 !important;
+    font-weight: 700 !important;
+    font-size: 25px !important;
+    text-shadow: 0 0 10px rgba(0, 255, 102, 0.6) !important;
+    font-family: Arial, sans-serif !important;
+}
+
+.cyber-marquee-wrapper:hover .cyber-marquee-content {
+    animation-play-state: paused !important;
+}
+
+@keyframes cyber-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+}
+
+marquee, .top-bar { display: none !important; }
+
+/* ==========================================
+   ESTILOS DA BARRA DE PESQUISA & SELETOR
+========================================== */
+.cyber-search-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 15px auto;
+    padding: 0 15px;
+    box-sizing: border-box;
+}
+
+#globalCyberSearch {
+    width: 100% !important;
+    background-color: #0d0d11 !important;
+    color: #00ff66 !important;
+    border: 2px solid #00ff66 !important;
+    border-radius: 8px !important;
+    padding: 12px 18px !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    box-shadow: 0 0 15px rgba(0, 255, 102, 0.25) !important;
+    outline: none !important;
+    box-sizing: border-box !important;
+}
+
+#idiomaSelect {
+    background-color: #0d0d11 !important;
+    color: #00ff66 !important;
+    border: 2px solid #00ff66 !important;
+    border-radius: 8px !important;
+    padding: 12px 14px !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    box-shadow: 0 0 15px rgba(0, 255, 102, 0.25) !important;
+    outline: none !important;
+    cursor: pointer !important;
+    box-sizing: border-box !important;
+    height: 100% !important;
+}
+
+.cyber-search-results {
+    display: none;
+    position: absolute;
+    top: 105%;
+    left: 0;
+    width: 100%;
+    background-color: #0a0a0f !important;
+    border: 1px solid #00ff66 !important;
+    border-radius: 6px !important;
+    box-shadow: 0 0 25px rgba(0, 255, 102, 0.6) !important;
+    z-index: 999999 !important;
+    max-height: 380px;
+    overflow-y: auto;
+}
+
+.search-item {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 12px 16px !important;
+    color: #ffffff !important;
+    text-decoration: none !important;
+    border-bottom: 1px solid rgba(0, 255, 102, 0.15) !important;
+    font-weight: 600 !important;
+    background-color: #0a0a0f !important;
+}
+
+.search-item:hover {
+    background-color: rgba(0, 255, 102, 0.2) !important;
+    color: #00ff66 !important;
+}
+
+/* ==========================================
+   BOTÃO FLUTUANTE DO WHATSAPP
+========================================== */
+.cyber-whatsapp-float {
+    position: fixed !important;
+    width: 60px !important;
+    height: 60px !important;
+    bottom: 25px !important;
+    right: 25px !important;
+    background-color: #25d366 !important;
+    border: 2px solid #00ff66 !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    z-index: 9999999 !important;
+    box-shadow: 0 0 20px rgba(0, 255, 102, 0.7) !important;
+    transition: all 0.3s ease-in-out !important;
+    padding: 10px !important;
+    box-sizing: border-box !important;
+}
+
+.cyber-whatsapp-float img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+}
+
+.cyber-whatsapp-float:hover {
+    transform: scale(1.12) rotate(6deg) !important;
+    box-shadow: 0 0 30px rgba(0, 255, 102, 0.95) !important;
+}
+
+/* ==========================================
+   TEMA ESCURO CYBERPUNK DO SITE
+========================================== */
+body, main, .wrapper, .content-wrapper, .bg-white, .container-fluid {
+    background-color: #050505 !important;
+    color: #e0e0e0 !important;
+}
+
+header, .navbar {
+    background-color: #0a0a0f !important;
+    border-bottom: 1px solid #00ff66 !important;
+    box-shadow: 0 4px 20px rgba(0, 255, 102, 0.15) !important;
+}
+
+.user-dropdown, .dropdown-toggle, header .user-menu {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.dropdown-menu, 
+div[class*="dropdown"], 
+ul[class*="dropdown"], 
+.nav-item .dropdown-menu,
+.navbar-nav .dropdown-menu,
+.mega-menu, 
+.menu-sub {
+    background-color: #0a0a0f !important;
+    border: 1px solid #00ff66 !important;
+    box-shadow: 0 0 15px rgba(0, 255, 102, 0.35) !important;
+    border-radius: 6px !important;
+    padding: 8px 0 !important;
+}
+
+.dropdown-item, 
+.dropdown-menu a, 
+.dropdown-menu li, 
+.dropdown-menu span,
+.navbar-nav .dropdown-menu a,
+div[class*="dropdown"] a,
+div[class*="dropdown"] li {
+    color: #ffffff !important;
+    background-color: transparent !important;
+    font-weight: 600 !important;
+    opacity: 1 !important;
+    transition: all 0.2s ease-in-out !important;
+}
+
+.dropdown-item:hover, 
+.dropdown-menu a:hover, 
+.dropdown-item:focus,
+.navbar-nav .dropdown-menu a:hover,
+div[class*="dropdown"] a:hover {
+    background-color: rgba(0, 255, 102, 0.15) !important;
+    color: #00ff66 !important;
+    padding-left: 18px !important;
+}
+
+.dropdown-menu i, .dropdown-menu svg {
+    color: #00ff66 !important;
+    margin-right: 8px !important;
+}
+
+.dropdown-divider {
+    border-top: 1px solid rgba(0, 255, 102, 0.2) !important;
+}
+
+.content-header h1, 
+.content-header h2,
+.content-header h3,
+.section-title, 
+h3[class*="title"], 
+h4[class*="title"],
+.card-header h3,
+.card-header h4,
+div[class*="title"],
+span[class*="title"],
+.box-title, .panel-title, .widget-title {
+    color: #00ff66 !important;
+    text-shadow: 0 0 10px rgba(0, 255, 102, 0.8) !important;
+    -webkit-text-fill-color: #00ff66 !important;
+}
+
+.card a, 
+.product-card a, 
+.service-card a, 
+div[class*="card"] a, 
+.card-title, 
+.product-title,
+.card p, 
+.card span:not([class*="badge"]),
+.product-item a,
+.card h1, .card h2, .card h3, .card h4, .card h5, .card h6 {
+    color: #ffffff !important;
+    opacity: 1 !important;
+    font-weight: 600 !important;
+    -webkit-text-fill-color: #ffffff !important;
+    text-shadow: none !important;
+}
+
+.badge, .badge-warning, .badge-info, .badge-success, .badge-primary {
+    background-color: #00ff66 !important;
+    color: #000000 !important;
+    -webkit-text-fill-color: #000000 !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    box-shadow: 0 0 8px rgba(0, 255, 102, 0.6) !important;
+    border: none !important;
+}
+
+.card, .product-card, .service-card {
+    background-color: #0d0d11 !important;
+    border: 1px solid rgba(0, 255, 102, 0.3) !important;
+    border-radius: 6px !important;
+}
+
+.card:hover, .product-card:hover {
+    border-color: #00ff66 !important;
+    box-shadow: 0 0 15px rgba(0, 255, 102, 0.35) !important;
+    transform: translateY(-2px);
+    transition: all 0.2s ease-in-out;
+}
+
+input, textarea, select, .form-control {
+    background-color: #121218 !important;
+    color: #00ff66 !important;
+    border: 1px solid #00ff66 !important;
+    transition: all 0.3s ease !important;
+}
+
+input:focus, .form-control:focus {
+    box-shadow: 0 0 12px rgba(0, 255, 102, 0.5) !important;
+    outline: none !important;
+}
+
+input::placeholder {
+    color: #888888 !important;
+}
+
+#gsmtheme-content .col-md-6:last-child, 
+#gsmtheme-content .col-lg-6:last-child,
+#gsmtheme-content div[style*="background: rgb(255"],
+#gsmtheme-content div[style*="background-color: rgb(255"],
+#gsmtheme-content div[style*="background: #fff"],
+#gsmtheme-content div[style*="background:#fff"],
+#gsmtheme-content .card:not(:first-child),
+#gsmtheme-content .panel:not(:first-child) {
+    background-color: #0d0d11 !important;
+    background: #0d0d11 !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(0, 255, 102, 0.4) !important;
+    border-radius: 8px !important;
+}
+
+#gsmtheme-content .col-md-6:last-child *, 
+#gsmtheme-content .col-lg-6:last-child * {
+    color: #ffffff !important;
+}
+
+#gsmtheme-content .col-md-6:last-child hr, 
+#gsmtheme-content .col-lg-6:last-child hr {
+    border-color: rgba(0, 255, 102, 0.2) !important;
+}
+
+#gsmtheme-content .col-md-6:last-child span[class*="text"],
+#gsmtheme-content .col-lg-6:last-child span[class*="text"],
+#gsmtheme-content .col-md-6:last-child strong,
+#gsmtheme-content .col-lg-6:last-child strong {
+    color: #00ff66 !important;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #050505;
+}
+::-webkit-scrollbar-thumb {
+    background: #00ff66;
+    border-radius: 4px;
+    box-shadow: 0 0 10px #00ff66;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #00cc52;
+}
