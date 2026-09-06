@@ -1,1 +1,198 @@
+/* ============================================================
+   GENERAL UNLOCKING
+   CYBERPUNK LANGUAGE SELECTOR
+   ============================================================ */
 
+#gu-language-switcher {
+
+    position: fixed;
+
+    top: 12px;
+
+    right: 18px;
+
+    z-index: 2147483646;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+}
+
+
+/* ============================================================
+   BOTÃO PRINCIPAL
+   ============================================================ */
+
+#gu-language-switcher
+.gu-language-current {
+
+    appearance: none;
+
+    border: 1px solid #00ff66;
+
+    background:
+        rgba(5, 5, 5, 0.96);
+
+    color: #00ff66;
+
+    padding:
+        9px 13px;
+
+    border-radius: 7px;
+
+    font-size: 13px;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 0 14px
+        rgba(0, 255, 102, 0.35);
+
+    transition:
+        all 0.2s ease;
+}
+
+
+#gu-language-switcher
+.gu-language-current:hover {
+
+    background:
+        rgba(0, 255, 102, 0.12);
+
+    box-shadow:
+        0 0 24px
+        rgba(0, 255, 102, 0.70);
+
+    transform:
+        translateY(-1px);
+}
+
+
+/* ============================================================
+   MENU
+   ============================================================ */
+
+#gu-language-switcher
+.gu-language-menu {
+
+    position: absolute;
+
+    right: 0;
+
+    top:
+        calc(100% + 7px);
+
+    width: 175px;
+
+    padding: 6px;
+
+    display: none;
+
+    background:
+        #0a0a0f;
+
+    border:
+        1px solid #00ff66;
+
+    border-radius: 8px;
+
+    box-shadow:
+        0 0 25px
+        rgba(0, 255, 102, 0.50);
+}
+
+
+/* Abre menu */
+
+#gu-language-switcher.gu-open
+.gu-language-menu {
+
+    display: block;
+}
+
+
+/* ============================================================
+   OPÇÕES
+   ============================================================ */
+
+#gu-language-switcher
+.gu-language-menu button {
+
+    display: block;
+
+    width: 100%;
+
+    border: none;
+
+    background:
+        transparent;
+
+    color: #ffffff;
+
+    text-align: left;
+
+    padding:
+        10px 11px;
+
+    border-radius: 5px;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        all 0.15s ease;
+}
+
+
+#gu-language-switcher
+.gu-language-menu button:hover {
+
+    background:
+        rgba(0, 255, 102, 0.14);
+
+    color:
+        #00ff66;
+
+    padding-left:
+        16px;
+}
+
+
+/* ============================================================
+   RESPONSIVO
+   ============================================================ */
+
+@media (max-width: 700px) {
+
+    #gu-language-switcher {
+
+        top: 8px;
+
+        right: 8px;
+    }
+
+
+    #gu-language-switcher
+    .gu-language-current {
+
+        padding:
+            8px 10px;
+
+        font-size:
+            12px;
+    }
+
+
+    #gu-language-switcher
+    .gu-language-menu {
+
+        width:
+            155px;
+    }
+}
