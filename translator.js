@@ -1,9 +1,9 @@
 /* ============================================================
-   GENERAL UNLOCKING
-   CYBERPUNK LANGUAGE SYSTEM
-   PT-BR / EN / ES
+    GENERAL UNLOCKING
+    CYBERPUNK LANGUAGE SYSTEM
+    PT-BR / EN / ES
 
-   Arquivo externo para integração com GSM Theme.
+    Arquivo externo para integração com GSM Theme.
    (Versão Otimizada com suporte a data-i18n e TreeWalker)
    ============================================================ */
 
@@ -41,8 +41,8 @@
 
 
     /* =========================================================
-       TRADUÇÕES DO SEU PRÓPRIO CÓDIGO
-       ========================================================= */
+        TRADUÇÕES DO SEU PRÓPRIO CÓDIGO
+        ========================================================= */
 
     const TRANSLATIONS = {
 
@@ -105,8 +105,8 @@
 
 
     /* =========================================================
-       TRADUÇÕES OPCIONAIS DO GSM THEME
-       ========================================================= */
+        TRADUÇÕES OPCIONAIS DO GSM THEME
+        ========================================================= */
 
     const INTERFACE_TRANSLATIONS = {
 
@@ -169,8 +169,8 @@
 
 
     /* =========================================================
-       STORAGE
-       ========================================================= */
+        STORAGE
+        ========================================================= */
 
     function getSavedLanguage() {
         try {
@@ -191,8 +191,8 @@
 
 
     /* =========================================================
-       TEXTO
-       ========================================================= */
+        TEXTO
+        ========================================================= */
 
     function getTranslation(key) {
         if (TRANSLATIONS[currentLanguage] && TRANSLATIONS[currentLanguage][key]) {
@@ -203,8 +203,8 @@
 
 
     /* =========================================================
-       SELETOR DE IDIOMA
-       ========================================================= */
+        SELETOR DE IDIOMA
+        ========================================================= */
 
     function createLanguageSelector() {
         if (document.getElementById('gu-language-switcher')) {
@@ -254,8 +254,8 @@
 
 
     /* =========================================================
-       ATUALIZA BOTÃO
-       ========================================================= */
+        ATUALIZA BOTÃO
+        ========================================================= */
 
     function updateLanguageButton() {
         const button = document.querySelector('.gu-language-current');
@@ -268,8 +268,8 @@
 
 
     /* =========================================================
-       TRADUZ SUA FAIXA
-       ========================================================= */
+        TRADUZ SUA FAIXA
+        ========================================================= */
 
     function translateBanner() {
         const banner = document.querySelector('.cyber-marquee-content');
@@ -281,8 +281,8 @@
 
 
     /* =========================================================
-       TRADUZ BUSCA
-       ========================================================= */
+        TRADUZ BUSCA
+        ========================================================= */
 
     function translateSearch() {
         const search = document.getElementById('globalCyberSearch');
@@ -301,8 +301,8 @@
 
 
     /* =========================================================
-       WHATSAPP
-       ========================================================= */
+        WHATSAPP
+        ========================================================= */
 
     function translateWhatsApp() {
         const button = document.querySelector('.cyber-whatsapp-float');
@@ -318,11 +318,11 @@
 
 
     /* =========================================================
-       TRADUÇÃO OTIMIZADA (data-i18n + TreeWalker Híbrido)
-       ========================================================= */
+        TRADUÇÃO OTIMIZADA (data-i18n direto + TreeWalker Híbrido)
+        ========================================================= */
 
     function translateInterface() {
-        // 1. Prioridade máxima: Elementos marcados explicitamente no HTML com data-i18n
+        // 1. Força a tradução imediata de qualquer elemento com data-i18n
         document.querySelectorAll('[data-i18n]').forEach(function (element) {
             const key = element.getAttribute('data-i18n');
             const dictionary = INTERFACE_TRANSLATIONS[currentLanguage];
@@ -337,7 +337,7 @@
             }
         });
 
-        // 2. Fallback para o restante do painel dinâmico (mantém o TreeWalker para o GSM Theme)
+        // 2. Fallback para o restante do painel dinâmico via TreeWalker
         if (currentLanguage === 'pt-BR') {
             return;
         }
@@ -394,8 +394,8 @@
 
 
     /* =========================================================
-       APLICA IDIOMA
-       ========================================================= */
+        APLICA IDIOMA
+        ========================================================= */
 
     function applyLanguage() {
         if (translating) return;
@@ -417,8 +417,8 @@
 
 
     /* =========================================================
-       TROCAR IDIOMA
-       ========================================================= */
+        TROCAR IDIOMA
+        ========================================================= */
 
     function setLanguage(language) {
         if (!CONFIG.languages[language]) {
@@ -443,8 +443,8 @@
 
 
     /* =========================================================
-       OBSERVER
-       ========================================================= */
+        OBSERVER
+        ========================================================= */
 
     function startObserver() {
         if (observer) return;
@@ -479,8 +479,8 @@
 
 
     /* =========================================================
-       INICIALIZAÇÃO
-       ========================================================= */
+        INICIALIZAÇÃO
+        ========================================================= */
 
     function init() {
         currentLanguage = getSavedLanguage();
@@ -499,8 +499,8 @@
 
 
     /* =========================================================
-       API GLOBAL
-       ========================================================= */
+        API GLOBAL
+        ========================================================= */
 
     window.GUTranslator = {
         setLanguage: setLanguage,
