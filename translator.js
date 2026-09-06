@@ -1,6 +1,6 @@
 /* ============================================================
     GENERAL UNLOCKING - CYBERPUNK LANGUAGE SYSTEM
-    Versão Otimizada e Instantânea para Painéis GSM/SMM
+    Versão Corrigida para Eventos de Clique
    ============================================================ */
 
 (function () {
@@ -19,7 +19,6 @@
         }
     };
 
-    /* Dicionário completo de interface e menus do painel */
     const INTERFACE_TRANSLATIONS = {
         'en': {
             'Início': 'Home',
@@ -108,7 +107,6 @@
     };
 
     let currentLanguage = CONFIG.defaultLanguage;
-    let observer = null;
 
     function getSavedLanguage() {
         try {
@@ -127,44 +125,49 @@
 
         const container = document.createElement('div');
         container.id = 'gu-language-switcher';
+        container.style.cssText = "position: fixed; bottom: 20px; right: 20px; z-index: 999999; font-family: inherit;";
+        
         container.innerHTML = `
-            <button type="button" class="gu-language-current">🇧🇷 PT-BR</button>
-            <div class="gu-language-menu">
-                <button type="button" data-language="pt-BR">🇧🇷 Português</button>
-                <button type="button" data-language="en">🇺🇸 English</button>
-                <button type="button" data-language="es">🇪🇸 Español</button>
+            <button type="button" id="gu-current-btn" style="background: #111; color: #00ffcc; border: 1px solid #00ffcc; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; box-shadow: 0 0 10px rgba(0,255,204,0.3);">🇧🇷 PT-BR</button>
+            <div id="gu-menu-box" style="display: none; position: absolute; bottom: 45px; right: 0; background: #111; border: 1px solid #333; border-radius: 8px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.5);">
+                <button type="button" data-lang="pt-BR" style="display: block; width: 100%; padding: 10px 15px; background: none; border: none; color: #fff; text-align: left; cursor: pointer;">🇧🇷 Português</button>
+                <button type="button" data-lang="en" style="display: block; width: 100%; padding: 10px 15px; background: none; border: none; color: #fff; text-align: left; cursor: pointer;">🇺🇸 English</button>
+                <button type="button" data-lang="es" style="display: block; width: 100%; padding: 10px 15px; background: none; border: none; color: #fff; text-align: left; cursor: pointer;">🇪🇸 Español</button>
             </div>
         `;
         document.body.appendChild(container);
 
-        container.querySelector('.gu-language-current').addEventListener('click', (e) => {
+        const currentBtn = document.getElementById('gu-current-btn');
+        const menuBox = document.getElementById('gu-menu-box');
+
+        currentBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            container.classList.toggle('gu-open');
+            menuBox.style.display = menuBox.style.display === 'block' ? 'none' : 'block';
         });
 
-        container.querySelectorAll('[data-language]').forEach(btn => {
+        container.querySelectorAll('[data-lang]').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.stopPropagation();
-                setLanguage(btn.getAttribute('data-language'));
-                container.classList.remove('gu-open');
+                menuBox.style.display = 'none';
+                setLanguage(btn.getAttribute('data-lang'));
             });
         });
 
-        document.addEventListener('click', () => container.classList.remove('gu-open'));
+        document.addEventListener('click', () => {
+            menuBox.style.display = 'none';
+        });
     }
 
     function updateButton() {
-        const btn = document.querySelector('.gu-language-current');
+        const btn = document.getElementById('gu-current-btn');
         if (!btn) return;
         const lang = CONFIG.languages[currentLanguage];
         btn.textContent = lang.flag + ' ' + lang.short;
     }
 
     function translateInterface() {
-        if (currentLanguage === 'pt-BR') return;
         const dict = INTERFACE_TRANSLATIONS[currentLanguage];
-        if (!dict) return;
-
+        
         const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
         let node;
         while ((node = walker.nextNode())) {
@@ -173,38 +176,38 @@
             if (['SCRIPT', 'STYLE', 'NOSCRIPT', 'INPUT'].includes(tag)) continue;
 
             const text = node.nodeValue.trim();
-            if (dict[text]) {
+            
+            // Se voltar para PT-BR, restaura o texto original se guardado, ou apenas aplica tradução se for EN/ES
+            if (currentLanguage === 'pt-BR') {
+                // Opcional: recarregar a página é mais seguro para resetar tudo perfeitamente ao mudar para PT
+                continue;
+            }
+
+            if (dict && dict[text]) {
                 node.nodeValue = node.nodeValue.replace(text, dict[text]);
             }
         }
-    }
-
-    function applyLanguage() {
-        document.documentElement.setAttribute('lang', currentLanguage);
-        updateButton();
-        translateInterface();
     }
 
     function setLanguage(lang) {
         if (!CONFIG.languages[lang]) return;
         currentLanguage = lang;
         saveLanguage(lang);
-        applyLanguage();
-        // Recarrega a página levemente ou reaplica para refletir instantaneamente
-        setTimeout(translateInterface, 100);
+        
+        if (lang === 'pt-BR') {
+            location.reload(); // Recarrega limpo para voltar ao PT-BR original
+        } else {
+            updateButton();
+            translateInterface();
+        }
     }
 
     function init() {
         currentLanguage = getSavedLanguage();
         createLanguageSelector();
-        applyLanguage();
-
-        // Observer inteligente para tabelas carregadas via AJAX/API
-        if (!observer && document.body) {
-            observer = new MutationObserver(() => {
-                if (currentLanguage !== 'pt-BR') translateInterface();
-            });
-            observer.observe(document.body, { childList: true, subtree: true });
+        updateButton();
+        if (currentLanguage !== 'pt-BR') {
+            setTimeout(translateInterface, 500);
         }
     }
 
