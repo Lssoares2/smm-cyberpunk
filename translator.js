@@ -1,6 +1,6 @@
 /* ============================================================
    GENERAL UNLOCKING
-   CYBERPUNK LANGUAGE SYSTEM - REVISED & FIXED
+   CYBERPUNK AUTOMATIC LANGUAGE SYSTEM (GOOGLE TRANSLATE API)
    ============================================================ */
 
 (function () {
@@ -11,101 +11,78 @@
 
     const CONFIG = {
         storageKey: 'GU_SELECTED_LANGUAGE',
-        defaultLanguage: 'pt-BR',
+        defaultLanguage: 'pt',
         languages: {
-            'pt-BR': { name: 'Português', short: 'PT-BR', flag: '🇧🇷' },
+            'pt': { name: 'Português', short: 'PT-BR', flag: '🇧🇷' },
             'en': { name: 'English', short: 'EN', flag: '🇺🇸' },
             'es': { name: 'Español', short: 'ES', flag: '🇪🇸' }
         }
     };
 
-    /* Dicionário de termos comuns de painéis GSM / SMM */
-    const TRANSLATIONS = {
-        'en': {
-            'SERVER SERVICE LIST': 'SERVER SERVICE LIST',
-            'Home': 'Home',
-            'Search Service': 'Search Service',
-            'USD': 'USD',
-            '1-10 MINUTES': '1-10 MINUTES',
-            'SUPPORT': 'SUPPORT',
-            'search': 'SEARCH ALL SERVICES (UNLOCKTOOL, IMEI, SERVER...)',
-            'none': 'No service found.',
-            'view': '➜ View',
-            'support': 'Contact Support on WhatsApp',
-            'banner': '🌐 GENERAL UNLOCKING — Connecting your workbench to one of the best GSM servers on the market. ⚡ Fast processing, automated panel and specialized support. 💻 Place your order now!'
-        },
-        'es': {
-            'SERVER SERVICE LIST': 'LISTA DE SERVICIOS DEL SERVIDOR',
-            'Home': 'Inicio',
-            'Search Service': 'Buscar Servicio',
-            'USD': 'USD',
-            '1-10 MINUTES': '1-10 MINUTOS',
-            'SUPPORT': 'SOPORTE',
-            'search': 'BUSCAR EN TODOS LOS SERVICIOS (UNLOCKTOOL, IMEI, SERVIDOR...)',
-            'none': 'No se encontró ningún servicio.',
-            'view': '➜ Ver',
-            'support': 'Contactar al Soporte por WhatsApp',
-            'banner': '🌐 GENERAL UNLOCKING — Conectando su bancada con uno de los mejores servidores GSM del mercado. ⚡ Procesamiento rápido, panel automatizado y soporte especializado. 💻 ¡Realice su pedido ahora!'
-        },
-        'pt-BR': {
-            'SERVER SERVICE LIST': 'SERVER SERVICE LIST',
-            'Home': 'Início',
-            'Search Service': 'Search Service',
-            'USD': 'USD',
-            '1-10 MINUTES': '1-10 MINUTES',
-            'SUPPORT': 'SUPPORT',
-            'search': 'BUSCAR EM TODOS OS SERVIÇOS (UNLOCKTOOL, IMEI, SERVIDOR...)',
-            'none': 'Nenhum serviço encontrado.',
-            'view': '➜ Ver',
-            'support': 'Fale com o Suporte no WhatsApp',
-            'banner': '🌐 GENERAL UNLOCKING — Conectando sua bancada ao melhor servidor GSM do mercado. ⚡ Processamento rápido, painel automatizado e suporte especializado. 💻 Faça seu pedido agora!'
-        }
-    };
-
     let currentLanguage = CONFIG.defaultLanguage;
-    let observer = null;
-    let translating = false;
 
-    function getSavedLanguage() {
-        try {
-            const saved = localStorage.getItem(CONFIG.storageKey);
-            if (saved && CONFIG.languages[saved]) return saved;
-        } catch (error) {}
-        return CONFIG.defaultLanguage;
+    /* =========================================================
+       1. CARREGAR SCRIPT OFICIAL DO GOOGLE TRANSLATE
+       ========================================================= */
+    function loadGoogleTranslateScript() {
+        if (document.getElementById('google-translate-script')) return;
+
+        // Cria a div oculta exigida pelo Google Translate
+        if (!document.getElementById('google_translate_element')) {
+            const hiddenDiv = document.createElement('div');
+            hiddenDiv.id = 'google_translate_element';
+            hiddenDiv.style.display = 'none';
+            document.body.appendChild(hiddenDiv);
+        }
+
+        window.googleTranslateElementInit = function () {
+            new google.translate.TranslateElement({
+                pageLanguage: 'pt',
+                includedLanguages: 'pt,en,es',
+                autoDisplay: false
+            }, 'google_translate_element');
+        };
+
+        const script = document.createElement('script');
+        script.id = 'google-translate-script';
+        script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+        document.head.appendChild(script);
     }
 
-    function saveLanguage(language) {
-        try {
-            localStorage.setItem(CONFIG.storageKey, language);
-        } catch (error) {}
-    }
-
+    /* =========================================================
+       2. CRIAR O SELETOR VISUAL CYBERPUNK
+       ========================================================= */
     function createLanguageSelector() {
         if (document.getElementById('gu-language-switcher')) return;
 
         const container = document.createElement('div');
         container.id = 'gu-language-switcher';
         container.innerHTML = `
-            <button type="button" class="gu-language-current" aria-label="Selecionar idioma">🇧🇷 PT-BR</button>
+            <button type="button" class="gu-language-current" aria-label="Selecionar idioma">
+                🇧🇷 PT-BR
+            </button>
             <div class="gu-language-menu">
-                <button type="button" data-language="pt-BR">🇧🇷 Português</button>
+                <button type="button" data-language="pt">🇧🇷 Português</button>
                 <button type="button" data-language="en">🇺🇸 English</button>
                 <button type="button" data-language="es">🇪🇸 Español</button>
             </div>
         `;
         document.body.appendChild(container);
 
-        container.querySelector('.gu-language-current').addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
+        // Ações de clique
+        const currentButton = container.querySelector('.gu-language-current');
+        currentButton.addEventListener('click', (event) => {
+            event.preventDefault();
+            event.stopPropagation();
             container.classList.toggle('gu-open');
         });
 
         container.querySelectorAll('[data-language]').forEach(button => {
-            button.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                setLanguage(button.getAttribute('data-language'));
+            button.addEventListener('click', (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                const lang = button.getAttribute('data-language');
+                changeLanguage(lang);
                 container.classList.remove('gu-open');
             });
         });
@@ -115,95 +92,76 @@
         });
     }
 
-    function updateLanguageButton() {
+    /* =========================================================
+       3. ATUALIZAR ESTADO DO BOTÃO
+       ========================================================= */
+    function updateButtonUI() {
         const button = document.querySelector('.gu-language-current');
         if (!button) return;
-        const lang = CONFIG.languages[currentLanguage];
+        const lang = CONFIG.languages[currentLanguage] || CONFIG.languages['pt'];
         button.textContent = `${lang.flag} ${lang.short}`;
         button.title = lang.name;
     }
 
-    function applyTranslations() {
-        if (translating) return;
-        translating = true;
-
+    /* =========================================================
+       4. ACIONAR A TRADUÇÃO VIA COMBOBOX DO GOOGLE
+       ========================================================= */
+    function changeLanguage(langCode) {
+        currentLanguage = langCode;
         try {
-            document.documentElement.setAttribute('lang', currentLanguage);
-            updateLanguageButton();
+            localStorage.setItem(CONFIG.storageKey, langCode);
+        } catch (e) {}
 
-            // Traduz a faixa de aviso
-            const banner = document.querySelector('.cyber-marquee-content');
-            if (banner) {
-                const msg = TRANSLATIONS[currentLanguage]['banner'] || TRANSLATIONS['pt-BR']['banner'];
-                banner.textContent = msg + '         ' + msg;
-            }
+        updateButtonUI();
 
-            // Traduz o input de busca geral
-            const search = document.getElementById('globalCyberSearch');
-            if (search) {
-                search.placeholder = TRANSLATIONS[currentLanguage]['search'] || TRANSLATIONS['pt-BR']['search'];
-            }
-
-            // Varredura de textos na página com base no dicionário
-            const dict = TRANSLATIONS[currentLanguage];
-            if (!dict) return;
-
-            const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
-            let node;
-            while ((node = walker.nextNode())) {
-                if (!node.parentElement) continue;
-                const tag = node.parentElement.tagName;
-                if (['SCRIPT', 'STYLE', 'NOSCRIPT', 'CANVAS', 'INPUT'].includes(tag)) continue;
-
-                const text = node.nodeValue.trim();
-                if (text && dict[text]) {
-                    node.nodeValue = node.nodeValue.replace(text, dict[text]);
-                }
-            }
-        } finally {
-            translating = false;
-        }
-    }
-
-    function setLanguage(language) {
-        if (!CONFIG.languages[language]) return;
-        currentLanguage = language;
-        saveLanguage(language);
-        applyTranslations();
-
-        document.dispatchEvent(new CustomEvent('GU_LANGUAGE_CHANGED', {
-            detail: { language }
-        }));
-    }
-
-    function startObserver() {
-        if (observer || !document.body) return;
-        observer = new MutationObserver(() => {
-            clearTimeout(startObserver.timer);
-            startObserver.timer = setTimeout(() => {
-                createLanguageSelector();
-                applyTranslations();
-            }, 250);
-        });
-        observer.observe(document.body, { childList: true, subtree: true });
-    }
-
-    function init() {
-        currentLanguage = getSavedLanguage();
-        createLanguageSelector();
-        applyTranslations();
-        startObserver();
-
-        [500, 1500, 3000].forEach(delay => {
+        // Procura o select oculto gerado pelo Google Translate e força a troca
+        const selectField = document.querySelector('.goog-te-combo');
+        if (selectField) {
+            selectField.value = langCode;
+            selectField.dispatchEvent(new Event('change'));
+        } else {
+            // Se o script do Google ainda estiver carregando, tenta novamente em 1 segundo
             setTimeout(() => {
-                createLanguageSelector();
-                applyTranslations();
-            }, delay);
-        });
+                const retrySelect = document.querySelector('.goog-te-combo');
+                if (retrySelect) {
+                    retrySelect.value = langCode;
+                    retrySelect.dispatchEvent(new Event('change'));
+                }
+            }, 1000);
+        }
+
+        document.dispatchEvent(new CustomEvent('GU_LANGUAGE_CHANGED', { detail: { language: langCode } }));
+    }
+
+    /* =========================================================
+       5. INICIALIZAÇÃO
+       ========================================================= */
+    function init() {
+        // Recupera idioma salvo
+        try {
+            const saved = localStorage.getItem(CONFIG.storageKey);
+            if (saved && CONFIG.languages[saved]) {
+                currentLanguage = saved;
+            }
+        } catch (e) {}
+
+        loadGoogleTranslateScript();
+        createLanguageSelector();
+        updateButtonUI();
+
+        // Aplica o idioma salvo assim que o Google Translate carregar na página
+        const checkGoogleLoaded = setInterval(() => {
+            const selectField = document.querySelector('.goog-te-combo');
+            if (selectField && currentLanguage !== 'pt') {
+                selectField.value = currentLanguage;
+                selectField.dispatchEvent(new Event('change'));
+                clearInterval(checkGoogleLoaded);
+            }
+        }, 500);
     }
 
     window.GUTranslator = {
-        setLanguage,
+        setLanguage: changeLanguage,
         getLanguage: () => currentLanguage
     };
 
